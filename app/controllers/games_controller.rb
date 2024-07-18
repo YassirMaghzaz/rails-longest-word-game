@@ -11,10 +11,17 @@ class GamesController < ApplicationController
   end
 
   def score
+    session[:score] ||= 0
     @letters = params[:letters].split
     @word = (params[:word] || "").upcase
     @included = included?(@word, @letters)
     @english_word = english_word?(@word)
+    if @included && @english_word
+      score = @word.length
+    else
+      score = 0
+    end
+    session[:score] += score
   end
 
   private
@@ -29,4 +36,3 @@ class GamesController < ApplicationController
     json['found']
   end
 end
-  
